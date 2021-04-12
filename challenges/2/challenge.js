@@ -52,6 +52,32 @@
  *  }
  */
 
-const normalizeData = unormalized => {}
+const normalizeData = unormalized => {
+  const obj = unormalized;
+  const normalized = {
+    results: {
+      [`${obj.id}`]: {
+        id: obj.id,
+        user: obj.user.id,
+        reports: obj.reports.map(r => r.id),
+      },
+    },
+    users: {
+      [`${obj.user.id}`]: {
+        id: obj.user.id,
+        name: obj.user.name
+      }
+    },
+  };
+  normalized.reports = {};
+  obj.reports.forEach(r => {
+    normalized.reports[`${r.id}`] = {};
+    normalized.reports[`${r.id}`].id = r.id;
+    normalized.reports[`${r.id}`].user = obj.user.id;
+    normalized.reports[`${r.id}`].document = r.result.document;
+    normalized.reports[`${r.id}`].status = r.result.status;
+  });
+  return normalized;
+}
 
 module.exports = normalizeData
