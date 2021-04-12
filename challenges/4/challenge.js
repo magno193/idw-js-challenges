@@ -26,7 +26,25 @@
  * }
  */
 
-const extractSize = htmlTemplate => {}
+const extractSize = htmlTemplate => {
+  if (htmlTemplate === '') {
+    return { width: 0, height: 0 }
+  }
+
+  const regex = /height:\s\d+|width:\s\d+/g;
+  let matchedString = htmlTemplate.match(regex);
+  let toReturn = {}
+  matchedString.forEach((str, index) => {
+    const res = str.split(': ');
+    str.height
+    str = { [res[0]]: Number(res[1]) };
+    // Assign only the first 2
+    if (!(index === 2)) {
+      Object.assign(toReturn, str);
+    }
+  });
+  return toReturn;
+}
 
 module.exports = extractSize;
 
