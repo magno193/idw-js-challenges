@@ -45,7 +45,50 @@
 *       [7]
 *    ]
  */
+/**
+ * 
+ * @param {number[]} set 
+ * @param {number} target 
+ * @return {number[][]}
+ */
+const combinate = (set, target) => {
+  if (target < 0) {
+    throw new Error(`{target} should be a positive number`);
+  }
+  if (set.some(n => n < 0)) {
+    throw new Error(`numbers inside the {set} array should be positive`);
+  }
+  // Problem found at https://leetcode.com/problems/combination-sum/
 
-const combinate = (set, target) => {}
+  // Sort the array
+  set = set.sort((a, b) => a - b);
+  // Remove duplicates
+  set = [...new Set(set)];
 
-module.exports = combinate
+  const finalCombination = [];
+
+  // Create a function to do recursive backtracking
+  /**
+   * 
+   * @param {number[]} tmpArray 
+   * @param {number} index 
+   */
+  const combine = (tmpArray, index) => {
+    for (let i = index; i < set.length; i++) {
+      tmpArray.push(set[i]);
+      const sumArr = tmpArray.reduce((acc, val) => acc + val);
+
+      if (sumArr === target) finalCombination.push(tmpArray.map(n => n));
+      // Until the sumArr is less then the target execute the function again
+      if (sumArr < target) combine(tmpArray, i);
+
+      tmpArray.pop();
+    }
+  };
+
+  // Execute the function the first time
+  combine([], 0);
+  return finalCombination;
+}
+
+module.exports = combinate;
