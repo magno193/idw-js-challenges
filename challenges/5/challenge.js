@@ -26,7 +26,24 @@
  */
 
 const posts = require('./posts.json')
+/**
+ * 
+ * @param {Object[]} collection 
+ * @param {number} pageNumber 
+ * @param {number} itemsPerPage 
+ */
+const paginate = (collection, pageNumber = 1, itemsPerPage = 10) => {
+  if (collection.constructor.name !== 'Array') {
+    throw new Error('Expect array and got ' + typeof collection);
+  }
+  let page = {
+    currentPage: pageNumber,
+    perPage: itemsPerPage,
+    total: collection.length,
+    totalPages: Math.ceil(collection.length / itemsPerPage),
+    data: collection.slice((pageNumber - 1) * itemsPerPage, pageNumber * itemsPerPage)
+  };
+  return page;
+};
 
-const paginate = (collection, pageNumber = 1, itemsPerPage = 10) => {}
-
-module.exports = paginate
+module.exports = paginate;
